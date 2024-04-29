@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enum\UserStatusEnum;
+use App\Models\Department;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -29,6 +31,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'department_id' => Department::inRandomOrder()->first(),
+            'isManagement' => $this->faker->boolean()
         ];
     }
 
@@ -39,6 +43,27 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    public function active(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => UserStatusEnum::ACTIVE->value,
+        ]);
+    }
+
+    public function inactive(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'status' => UserStatusEnum::INACTIVE->value,
+        ]);
+    }
+
+    public function isManagement(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_management' => true,
         ]);
     }
 }
