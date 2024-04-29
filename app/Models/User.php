@@ -48,13 +48,22 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'status' => UserStatusEnum::class,
+            'is_management' => 'Boolean'
         ];
     }
 
-    // protected static function boot()
-    // {
-    //     parent::boot();
+    public function isManagement() : bool
+    {
+        return $this->is_management === true;
+    }
 
-    //     static::addGlobalScope(new OrderByNameScope());
-    // }
+    public function scopeIsActive($query) : void
+    {
+        $query->where('status', UserStatusEnum::ACTIVE->value);
+    }
+
+    public function scopeIsInactive($query) : void
+    {
+        $query->where('status', UserStatusEnum::INACTIVE->value);
+    }
 }
