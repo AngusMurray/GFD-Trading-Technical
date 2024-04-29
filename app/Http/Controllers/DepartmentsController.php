@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\departments;
-use App\Http\Requests\StoredepartmentsRequest;
-use App\Http\Requests\UpdatedepartmentsRequest;
+use App\Models\Department;
+use App\Http\Requests\StoreDepartmentRequest;
+use App\Http\Requests\UpdateDepartmentRequest;
 
-class DepartmentsController extends Controller
+class DepartmentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class DepartmentsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoredepartmentsRequest $request)
+    public function store(StoreDepartmentRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class DepartmentsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(departments $departments)
+    public function show(Department $Department)
     {
         //
     }
@@ -43,7 +43,7 @@ class DepartmentsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(departments $departments)
+    public function edit(Department $Department)
     {
         //
     }
@@ -51,7 +51,7 @@ class DepartmentsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatedepartmentsRequest $request, departments $departments)
+    public function update(UpdateDepartmentRequest $request, Department $Department)
     {
         //
     }
@@ -59,7 +59,7 @@ class DepartmentsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(departments $departments)
+    public function destroy(Department $Department)
     {
         //
     }

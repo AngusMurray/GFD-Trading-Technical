@@ -2,16 +2,22 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Department;
 use Illuminate\Database\Seeder;
 
-class DepartmentsSeeder extends Seeder
+class DepartmentSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        //
+        collect([
+            ['name' => 'Sales'],
+            ['name' => 'Order processing'],
+            ['name' => 'Support'],
+        ])->each(function ($department){
+            Department::create($department);
+        });
     }
 }
