@@ -51,10 +51,10 @@ class User extends Authenticatable
         ];
     }
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::addGlobalScope(new OrderByNameScope());
-    }
+    //     static::addGlobalScope(new OrderByNameScope());
+    // }
 }
