@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Enum\UserStatusEnum;
+use App\Models\Scopes\OrderByNameScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -48,5 +49,12 @@ class User extends Authenticatable
             'password' => 'hashed',
             'status' => UserStatusEnum::class,
         ];
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new OrderByNameScope());
     }
 }
