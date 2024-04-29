@@ -17,6 +17,9 @@ class UserSeeder extends Seeder
     {
         User::factory(10)->create();
 
+        /**
+         * Seed management user
+         */
         collect([
             ['name' => 'Management User', 'email' => 'management.user@company.co.uk', 'email_verified_at' => now(), 'password' => static::$password ??= Hash::make('qwerty123'), 'department_id' => Department::inRandomOrder()->first()->id, 'isManagement' => true]
         ])->each(function ($seed){
