@@ -4,11 +4,27 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
     use RefreshDatabase;
+
+    
+    public function test_user_management_page_is_displayed(): void
+    {
+        $managementUser = User::factory()->isManagement()->create();
+
+        $response = $this
+            ->actingAs($managementUser)
+            ->get(route('users.index'));
+
+        $response->assertOk();
+        $response->assertInertia(function (Assert $page) {
+            $page->has('users');
+        });
+    }
 
     public function test_profile_page_is_displayed(): void
     {
@@ -59,13 +75,11 @@ class UserTest extends TestCase
                 'email' => $user->email,
             ]);
 
-        $response
-            ->assertSessionHasNoErrors();
-            // ->assertRedirect->get(route('profile.edit', ['user' => $user->id]));
+        $response->assertSessionHasNoErrors();
 
         $this->assertNotNull($user->refresh()->email_verified_at);
     }
-
+    // To-do: Fix bottom two tests
     public function test_user_can_delete_their_account(): void
     {
         $user = User::factory()->create();
