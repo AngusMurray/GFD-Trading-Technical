@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\UserStatusEnum;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\UpdateUserStatusRequest;
 use App\Http\Requests\UserDeleteRequest;
 use App\Models\Department;
 use App\Models\User;
@@ -52,6 +54,24 @@ class UserController extends Controller
             $request->user()->email_verified_at = null;
         }
 
+        $user->save();
+
+        return Redirect::route('profile.edit', ['user' => $user]);
+    }
+
+    
+    /**
+     * Set user status
+     */
+    public function status( UpdateUserStatusRequest $request, User $user): RedirectResponse
+    {
+        $validated = $request->validated();
+
+        if($validated['status'] == true) {
+            $user->status = UserStatusEnum::ACTIVE->value;
+        } else {
+            $user->status = UserStatusEnum::INACTIVE->value;
+        }
         $user->save();
 
         return Redirect::route('profile.edit', ['user' => $user]);

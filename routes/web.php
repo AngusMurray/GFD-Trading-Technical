@@ -20,6 +20,7 @@ Route::get('/dashboard', DashboardController::class)->middleware(['auth', 'verif
 Route::middleware('auth')->group(function () {
     Route::get('/{user}/edit', [UserController::class, 'edit'])->name('profile.edit');
     Route::patch('/{user}/update', [UserController::class, 'update'])->name('profile.update');
+    Route::patch('/{user}/status', [UserController::class, 'status'])->name('profile.status');
     Route::delete('/{user}/destroy', [UserController::class, 'destroy'])->name('profile.destroy');
 });
 
