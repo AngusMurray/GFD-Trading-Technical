@@ -10,6 +10,10 @@ const props = defineProps({
         type: Object,
         required: true
     },
+    is: {
+        type: Array,
+        required: true
+    },
     mustVerifyEmail: {
         type: Boolean,
     },
@@ -17,14 +21,15 @@ const props = defineProps({
         type: String,
     },
 });
-</script>
 
+const heading = props.is.self ? 'Profile' : props.user.name + '\'s profile'
+</script>
 <template>
-    <Head title="Profile" />
+    <Head :title="heading" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">Profile</h2>
+            <h2 class="text-xl font-semibold leading-tight text-gray-800">{{heading}}</h2>
         </template>
 
         <div class="py-12">
