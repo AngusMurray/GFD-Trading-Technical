@@ -37,7 +37,7 @@ class DepartmentsController extends Controller
         ]);
     }
 
-        /**
+    /**
      * Display the specified resource.
      */
     public function orderProcessingDashboard(Department $department, User $user)

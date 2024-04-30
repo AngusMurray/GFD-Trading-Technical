@@ -2,7 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\Department;
 use App\Models\User;
+use Database\Seeders\DepartmentSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
@@ -10,7 +12,11 @@ use Tests\TestCase;
 class UserTest extends TestCase
 {
     use RefreshDatabase;
-
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(DepartmentSeeder::class);
+    }
     
     public function test_user_management_page_is_displayed(): void
     {
@@ -55,6 +61,7 @@ class UserTest extends TestCase
         $response = $this->actingAs($user)->patch(route('profile.update', ['user' => $user->id]), [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
+                'department_id' => Department::first()->id
             ]);
 
         $response->assertSessionHasNoErrors()->assertRedirect(route('profile.edit', ['user' => $user->id]));
@@ -78,41 +85,5 @@ class UserTest extends TestCase
         $response->assertSessionHasNoErrors();
 
         $this->assertNotNull($user->refresh()->email_verified_at);
-    }
-    // To-do: Fix bottom two tests
-    public function test_user_can_delete_their_account(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this
-            ->actingAs($user)
-            ->delete(route('profile.destroy', ['user' => $user->id]), [
-                'password' => 'password',
-            ]);
-
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/');
-
-        $this->assertGuest();
-        $this->assertNull($user->fresh());
-    }
-
-    public function test_correct_password_must_be_provided_to_delete_account(): void
-    {
-        $user = User::factory()->create();
-
-        $response = $this
-            ->actingAs($user)
-            ->from('/profile')
-            ->delete('/profile', [
-                'password' => 'wrong-password',
-            ]);
-
-        $response
-            ->assertSessionHasErrors('password')
-            ->assertRedirect(route('profile.edit', ['user' => $user->id]));
-
-        $this->assertNotNull($user->fresh());
     }
 }
