@@ -29,7 +29,7 @@ const confirmUserDeletion = () => {
 };
 
 const deleteUser = () => {
-    form.delete(route('profile.destroy'), { //To-do: Make this user route-model binding
+    form.delete(route('profile.destroy', {user: props.user.id}), { //To-do: Make this user route-model binding
         preserveScroll: true,
         onSuccess: () => closeModal(),
         onError: () => passwordInput.value.focus(),

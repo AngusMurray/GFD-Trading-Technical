@@ -67,7 +67,7 @@ class UserFactory extends Factory
     public function isManagement(): static
     {
         return $this->state(fn (array $attributes) => [
-            'is_management' => true,
+            'isManagement' => true,
         ]);
     }
 }

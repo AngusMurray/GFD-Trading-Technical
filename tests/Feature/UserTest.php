@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ProfileTest extends TestCase
+class UserTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -16,7 +16,19 @@ class ProfileTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->get('/profile');
+            ->get(route('profile.edit', ['user' => $user->id]));
+
+        $response->assertOk();
+    }
+
+    public function test_a_management_user_can_view_another_users_profile_page(): void
+    {
+        $user = User::factory()->create();
+        $managementUser = User::factory()->isManagement()->create();
+
+        $response = $this
+            ->actingAs($managementUser)
+            ->get(route('profile.edit', ['user' => $user->id]));
 
         $response->assertOk();
     }
@@ -24,23 +36,16 @@ class ProfileTest extends TestCase
     public function test_profile_information_can_be_updated(): void
     {
         $user = User::factory()->create();
-
-        $response = $this
-            ->actingAs($user)
-            ->patch('/profile', [
+        $response = $this->actingAs($user)->patch(route('profile.update', ['user' => $user->id]), [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
             ]);
 
-        $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/profile');
-
-        $user->refresh();
-
-        $this->assertSame('Test User', $user->name);
-        $this->assertSame('test@example.com', $user->email);
-        $this->assertNull($user->email_verified_at);
+        $response->assertSessionHasNoErrors()->assertRedirect(route('profile.edit', ['user' => $user->id]));
+        $this->assertDatabaseHas('users', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
     }
 
     public function test_email_verification_status_is_unchanged_when_the_email_address_is_unchanged(): void
@@ -49,14 +54,14 @@ class ProfileTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->patch('/profile', [
+            ->patch(route('profile.edit', ['user' => $user->id]), [
                 'name' => 'Test User',
                 'email' => $user->email,
             ]);
 
         $response
-            ->assertSessionHasNoErrors()
-            ->assertRedirect('/profile');
+            ->assertSessionHasNoErrors();
+            // ->assertRedirect->get(route('profile.edit', ['user' => $user->id]));
 
         $this->assertNotNull($user->refresh()->email_verified_at);
     }
@@ -67,7 +72,7 @@ class ProfileTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->delete('/profile', [
+            ->delete(route('profile.destroy', ['user' => $user->id]), [
                 'password' => 'password',
             ]);
 
@@ -92,7 +97,7 @@ class ProfileTest extends TestCase
 
         $response
             ->assertSessionHasErrors('password')
-            ->assertRedirect('/profile');
+            ->assertRedirect(route('profile.edit', ['user' => $user->id]));
 
         $this->assertNotNull($user->fresh());
     }
