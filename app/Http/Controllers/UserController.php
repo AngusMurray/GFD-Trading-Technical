@@ -24,6 +24,8 @@ class UserController extends Controller
      */
     public function edit(Request $request, User $user): Response
     {
+        Gate::authorize('view', auth()->user());
+        
         return Inertia::render('Profile/Edit', [
             'is' => [
                 'self' => $user->is(auth()->user()),

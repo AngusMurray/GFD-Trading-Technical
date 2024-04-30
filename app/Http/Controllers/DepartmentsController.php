@@ -3,67 +3,61 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
-use App\Http\Requests\StoreDepartmentRequest;
-use App\Http\Requests\UpdateDepartmentRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
+use Inertia\Response as InertiaResponse;
 
-class DepartmentController extends Controller
+class DepartmentsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function __invoke() : InertiaResponse
     {
-        //
+        $user = auth()->user();
+        $user->load([
+            'department'
+        ]);
+
+        if ($user->department->name === 'Sales') {
+            return $this->salesDashboard($user->department, $user);
+        } elseif ($user->department->name === 'Order processing') {
+            return $this->orderProcessingDashboard($user->department, $user);
+        }
+
+        return $this->supportDashboard($user->department, $user);
+    }
+    /**
+     * Display the specified resource.
+     */
+    public function salesDashboard(Department $department, User $user)
+    {
+        Gate::authorize('view', $department, $user);
+
+        return Inertia::render('Department/Sales', [
+            'department' => Department::all(['id', 'name'])
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
+        /**
+     * Display the specified resource.
      */
-    public function create()
+    public function orderProcessingDashboard(Department $department, User $user)
     {
-        //
-    }
+        Gate::authorize('view', $department, $user);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreDepartmentRequest $request)
-    {
-        //
+        return Inertia::render('Department/OrderProcessing', [
+            'department' => Department::all(['id', 'name'])
+        ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Department $department)
+    public function supportDashboard(Department $department, User $user)
     {
-        return Inertia::render('Department/view', [
-            'department' => $department
+        Gate::authorize('view', $department, $user);
+
+        return Inertia::render('Department/Support', [
+            'department' => Department::all(['id', 'name'])
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Department $Department)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateDepartmentRequest $request, Department $Department)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Department $Department)
-    {
-        //
     }
 }

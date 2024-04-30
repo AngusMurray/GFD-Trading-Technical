@@ -9,8 +9,15 @@ use Illuminate\Validation\Rule;
 
 class UpdateUserStatusRequest extends FormRequest
 {
-
-
+    /**
+     * Determine if the user is authorized to make this request
+     *
+     */
+    public function authorize() : bool
+    {
+        return $this->user()->can('update', $this->route('user'));
+    }
+    
     /**
      * Get the validation rules that apply to the request.
      *

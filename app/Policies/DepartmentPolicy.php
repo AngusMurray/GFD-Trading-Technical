@@ -19,9 +19,9 @@ class DepartmentPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Department $Department): bool
+    public function view(User $user, Department $department): bool
     {
-        //
+        return $user->department->is($department);
     }
 
     /**

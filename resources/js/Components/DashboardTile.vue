@@ -17,7 +17,7 @@ const props = defineProps({
 }); 
 
 const submit = () => {
-    router.get(route('users.index'));
+    router.get(route(props.path));
 };
 </script>
 <template>
