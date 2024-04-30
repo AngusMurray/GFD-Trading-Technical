@@ -18,14 +18,15 @@ const props = defineProps({
     },
 });
 
-const user = usePage().props.auth.user; //To-do: Change this to be a passed down prop
-
 const form = useForm({
     name: props.user.name,
     email: props.user.email,
 });
-</script>
 
+const submit = () => {
+    form.patch(route('profile.update', {user: props.user.id}))
+};
+</script>
 <template>
     <section>
         <header>
@@ -35,7 +36,7 @@ const form = useForm({
             </p>
         </header>
 
-        <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
+        <form @submit.prevent="submit" class="mt-6 space-y-6">
             <div>
                 <InputLabel for="name" value="Name" />
                 <TextInput

@@ -23,7 +23,7 @@ const form = useForm({
 });
 
 const updatePassword = () => {
-    form.put(route('password.update'), {  //To-do: Make this user route-model binding
+    form.put(route('password.update', {user: props.user.id}), {  //To-do: Make this user route-model binding
         preserveScroll: true,
         onSuccess: () => form.reset(),
         onError: () => {

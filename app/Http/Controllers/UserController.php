@@ -37,15 +37,16 @@ class UserController extends Controller
      */
     public function update(ProfileUpdateRequest $request, User $user): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $validated = $request->validated();
+        $user->update($validated);
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
 
-        return Redirect::route('profile.edit');
+        return Redirect::route('profile.edit', ['user' => $user]);
     }
 
     /**
