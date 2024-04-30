@@ -10,6 +10,10 @@ const props = defineProps({
         type: Object,
         required: true
     },
+    departments: {
+        type: Object,
+        required: true
+    },
     mustVerifyEmail: {
         type: Boolean,
     },
@@ -21,7 +25,7 @@ const props = defineProps({
 const form = useForm({
     name: props.user.name,
     email: props.user.email,
-    department: props.user.department.name,
+    department_id: props.user.department_id,
 });
 
 const submit = () => {
@@ -65,14 +69,10 @@ const submit = () => {
             </div>
             <div>
                 <InputLabel for="department" value="Department" /> <!-- To-do: change textInput to drop-down input -->
-                <TextInput
-                    id="department"
-                    type="department"
-                    class="block w-full mt-1"
-                    v-model="form.department"
-                    required
-                    autocomplete="username"
-                />
+                <select v-model="form.department_id">
+                    <option disabled value="">Please select one</option>
+                    <option v-for="department in departments" :key="department" :value="department.id">{{ department.name }}</option>
+                </select>
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
             <div v-if="mustVerifyEmail && props.user.email_verified_at === null">

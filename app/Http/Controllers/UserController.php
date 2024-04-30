@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Requests\UserDeleteRequest;
+use App\Models\Department;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -28,6 +29,7 @@ class UserController extends Controller
             'user' => $user->load([
                 'department'
             ]),
+            'departments' => Department::all(['id', 'name']),
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
         ]);
@@ -40,6 +42,10 @@ class UserController extends Controller
     {
         $validated = $request->validated();
         $user->update($validated);
+
+        if(array_key_exists('department_id', $validated)) {
+            $user->department()->associate($validated['department_id']);
+        }
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;

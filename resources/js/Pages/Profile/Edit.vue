@@ -10,6 +10,10 @@ const props = defineProps({
         type: Object,
         required: true
     },
+    departments: {
+        type: Object,
+        required: true
+    },
     is: {
         type: Array,
         required: true
@@ -37,6 +41,7 @@ const heading = props.is.self ? 'Profile' : props.user.name + '\'s profile'
                 <div class="p-4 bg-white shadow sm:p-8 sm:rounded-lg">
                     <UpdateProfileInformationForm
                         :user="props.user"
+                        :departments="props.departments"
                         :must-verify-email="mustVerifyEmail"
                         :status="status"
                         class="max-w-xl"
