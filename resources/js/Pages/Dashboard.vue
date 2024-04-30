@@ -6,7 +6,7 @@ import { ref } from 'vue';
 
 const props = defineProps({
     departments: {
-        type: String,
+        type: Object,
         required: true
     }
 });

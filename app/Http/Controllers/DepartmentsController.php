@@ -36,9 +36,11 @@ class DepartmentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Department $Department)
+    public function show(Department $department)
     {
-        //
+        return Inertia::render('Department/view', [
+            'department' => $department
+        ]);
     }
 
     /**
