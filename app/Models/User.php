@@ -4,9 +4,9 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Enum\UserStatusEnum;
-use App\Models\Scopes\OrderByNameScope;
+use App\Enums\UserStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -65,5 +65,10 @@ class User extends Authenticatable
     public function scopeIsInactive($query) : void
     {
         $query->where('status', UserStatusEnum::INACTIVE->value);
+    }
+
+    public function department() : BelongsTo 
+    {
+        return $this->BelongsTo(Department::class);
     }
 }

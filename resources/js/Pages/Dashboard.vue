@@ -2,7 +2,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import DashboardTile from '@/Components/DashboardTile.vue';
-import { ref } from 'vue';
 
 const props = defineProps({
     departments: {

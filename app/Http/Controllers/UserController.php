@@ -21,6 +21,12 @@ class UserController extends Controller
     public function edit(Request $request, User $user): Response
     {
         return Inertia::render('Profile/Edit', [
+            'is' => [
+                'self' => $user->is(auth()->user())
+            ],
+            'user' => $user->load([
+                'department'
+            ]),
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
         ]);
@@ -29,7 +35,7 @@ class UserController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileUpdateRequest $request, User $user): RedirectResponse
     {
         $request->user()->fill($request->validated());
 

@@ -15,11 +15,8 @@ class UserManagementController extends Controller
      */
     public function index()
     {
-        // $this->authorize('viewAny', User::class);
-        Gate::authorize('viewAny', User::class);
-
-        return Inertia::render('Usermanagement/List', [
-            //To-do: Add props
+        return Inertia::render('UserManagement/List', [
+            'users' => User::all()->load(['department']),
         ]);
     }
 

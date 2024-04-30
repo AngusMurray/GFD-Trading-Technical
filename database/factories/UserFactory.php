@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Enum\UserStatusEnum;
+use App\Enums\UserStatusEnum;
 use App\Models\Department;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -32,7 +32,11 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'department_id' => Department::inRandomOrder()->first(),
-            'isManagement' => $this->faker->boolean()
+            'isManagement' => $this->faker->boolean(),
+            'status' => $this->faker->randomElement([
+                UserStatusEnum::ACTIVE,
+                UserStatusEnum::INACTIVE
+            ])
         ];
     }
 

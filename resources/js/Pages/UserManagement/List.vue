@@ -1,8 +1,16 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-</script>
+import UserListTable from '@/Components/UserListTable.vue';
 
+const props = defineProps({
+    users: {
+        type: Object,
+        required: false
+    },
+});
+
+</script>
 <template>
     <Head title="User management" />
 
@@ -14,7 +22,10 @@ import { Head } from '@inertiajs/vue3';
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900">List of users here!</div>
+                    <div class="p-6 text-gray-900">
+                        <p v-for="user in props.users" :key="user">{{ user.name }}</p>
+                    </div>
+                    <UserListTable :users="props.users" />
                 </div>
             </div>
         </div>

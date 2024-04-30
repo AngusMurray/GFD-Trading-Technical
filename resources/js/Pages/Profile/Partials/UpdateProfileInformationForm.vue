@@ -14,7 +14,7 @@ defineProps({
     },
 });
 
-const user = usePage().props.auth.user;
+const user = usePage().props.auth.user; //To-do: Change this to be a passed down prop
 
 const form = useForm({
     name: user.name,
