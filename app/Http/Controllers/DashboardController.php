@@ -12,7 +12,7 @@ class DashboardController extends Controller
     public function __invoke()
     {
         return Inertia::render('Dashboard', [
-            'department' => Department::all(['id', 'name']),
+            'departments' => Department::all(['id', 'name']),
         ]);
     }
 }
