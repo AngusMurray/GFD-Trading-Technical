@@ -5,7 +5,11 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 
-defineProps({
+const props = defineProps({
+    user: {
+        type: Object,
+        required: true
+    },
     mustVerifyEmail: {
         type: Boolean,
     },
@@ -17,8 +21,8 @@ defineProps({
 const user = usePage().props.auth.user; //To-do: Change this to be a passed down prop
 
 const form = useForm({
-    name: user.name,
-    email: user.email,
+    name: props.user.name,
+    email: props.user.email,
 });
 </script>
 
@@ -62,7 +66,7 @@ const form = useForm({
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div v-if="mustVerifyEmail && user.email_verified_at === null">
+            <div v-if="mustVerifyEmail && props.user.email_verified_at === null">
                 <p class="mt-2 text-sm text-gray-800">
                     Your email address is unverified.
                     <Link
