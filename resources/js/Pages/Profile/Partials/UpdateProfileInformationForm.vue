@@ -21,7 +21,7 @@ const props = defineProps({
 const form = useForm({
     name: props.user.name,
     email: props.user.email,
-    department: props.user.department,
+    department: props.user.department.name,
 });
 
 const submit = () => {

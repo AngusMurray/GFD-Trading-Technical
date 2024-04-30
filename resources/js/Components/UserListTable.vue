@@ -13,7 +13,7 @@ const viewUser = (userId) => {
 };
 </script>
 <template>
-<table class="table-auto">
+<table class="w-full table-auto">
     <thead>
         <tr>
             <th>Staff name</th>
@@ -23,7 +23,7 @@ const viewUser = (userId) => {
         </thead>
         <tbody>
             <tr  v-for="user in props.users" :key="user">
-                <td @click="viewUser(user.id)" class="font-bold hover:underline">{{ user.name }}</td>
+                <td @click="viewUser(user.id)" class="font-bold hover:underline hover:cursor-pointer">{{ user.name }}</td>
                 <td>{{ user.department.name }}</td>
                 <td>{{user.status}}</td>
             </tr>
