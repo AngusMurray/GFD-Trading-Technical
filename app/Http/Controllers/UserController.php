@@ -24,7 +24,8 @@ class UserController extends Controller
     {
         return Inertia::render('Profile/Edit', [
             'is' => [
-                'self' => $user->is(auth()->user())
+                'self' => $user->is(auth()->user()),
+                'active' => $user->isActive()
             ],
             'user' => $user->load([
                 'department'

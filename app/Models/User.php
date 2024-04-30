@@ -57,14 +57,14 @@ class User extends Authenticatable
         return $this->is_management === true;
     }
 
-    public function scopeIsActive($query) : void
+    public function isActive() : bool
     {
-        $query->where('status', UserStatusEnum::ACTIVE->value);
+        return $this->status === UserStatusEnum::ACTIVE->value;
     }
 
-    public function scopeIsInactive($query) : void
+    public function isInactive() : bool
     {
-        $query->where('status', UserStatusEnum::INACTIVE->value);
+        return $this->status === UserStatusEnum::INACTIVE->value;
     }
 
     public function department() : BelongsTo 

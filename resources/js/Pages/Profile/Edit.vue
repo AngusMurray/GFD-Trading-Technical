@@ -4,6 +4,7 @@ import DeleteUserForm from './Partials/DeleteUserForm.vue';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import { Head } from '@inertiajs/vue3';
+import DangerButton from '@/Components/DangerButton.vue';
 
 const props = defineProps({
     user: {
@@ -27,13 +28,26 @@ const props = defineProps({
 });
 
 const heading = props.is.self ? 'Profile' : props.user.name + '\'s profile'
+
+const changeUserStatus = () => {
+    form.patch(route('profile.update', {user: props.user.id}), {
+        preserveScroll: true,
+    });
+};
+
 </script>
 <template>
     <Head :title="heading" />
 
     <AuthenticatedLayout>
-        <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">{{heading}}</h2>
+        <template #header >
+            <div class="flex gap-2">
+                <h2 class="text-xl font-semibold leading-tight text-gray-800">{{heading}}</h2>
+                <DangerButton class="ms-3" @click="changeUserStatus">
+                    <p v-if="props.user.status === 'active'">Deactivate user</p>
+                    <p v-else>Activate user</p>
+                </DangerButton>
+            </div>
         </template>
 
         <div class="py-12">
