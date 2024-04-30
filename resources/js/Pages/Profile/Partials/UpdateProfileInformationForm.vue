@@ -68,8 +68,8 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
             <div>
-                <InputLabel for="department" value="Department" /> <!-- To-do: change textInput to drop-down input -->
-                <select v-model="form.department_id">
+                <InputLabel for="department" value="Department" />
+                <select v-model="form.department_id" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                     <option disabled value="">Please select one</option>
                     <option v-for="department in departments" :key="department" :value="department.id">{{ department.name }}</option>
                 </select>
