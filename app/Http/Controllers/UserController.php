@@ -20,10 +20,6 @@ class UserController extends Controller
      */
     public function edit(Request $request, User $user): Response
     {
-        if ($request->user()->cannot('viewAny', $user)) {
-            abort(403);
-        }
-        // Gate::authorize('viewAny', User::class);
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
